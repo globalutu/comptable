@@ -1,48 +1,41 @@
-// Chargement initial du tableau de bord
 window.addEventListener('DOMContentLoaded', () => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (!currentUser) {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+
+    if (!user) {
         window.location.href = 'index.html';
     }
 
-    document.getElementById('username').textContent = currentUser.username;
+    document.getElementById('username').textContent = user.username;
+    document.getElementById('role').textContent = user.role;
+    document.getElementById('manager').textContent = user.manager;
+    document.getElementById('phone').textContent = user.phone;
+
+    if (user.role === 'Admin') {
+        document.getElementById('adminActions').style.display = 'block';
+    }
 
     fetch('data.txt')
         .then(response => response.text())
         .then(data => {
             const lines = data.split('\n');
-            const userData = lines.find(line => line.startsWith(currentUser.username));
+            const userData = lines.find(line => line.startsWith(user.username));
+            const [username, balance, history] = userData.split('|');
 
-            if (userData) {
-                const [username, balance, history] = userData.split('|');
-                document.getElementById('balance').textContent = `${balance}€`;
-
-                const historyList = document.getElementById('transferHistory');
-                historyList.innerHTML = '';
-                history.split(';').forEach(entry => {
-                    const li = document.createElement('li');
-                    li.textContent = entry;
-                    historyList.appendChild(li);
-                });
-            }
+            document.getElementById('balance').textContent = `${balance}€`;
+            const historyList = document.getElementById('transferHistory');
+            history.split(';').forEach(entry => {
+                const li = document.createElement('li');
+                li.textContent = entry;
+                li.className = 'list-group-item';
+                historyList.appendChild(li);
+            });
         });
 });
 
-// Gestion des transferts
-document.getElementById('transferBtn').addEventListener('click', () => {
+document.getElementById('transferForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
     const recipient = document.getElementById('recipient').value;
     const amount = parseFloat(document.getElementById('amount').value);
-
-    const currentBalance = parseFloat(document.getElementById('balance').textContent);
-    if (recipient && !isNaN(amount) && amount > 0 && amount <= currentBalance) {
-        const newBalance = currentBalance - amount;
-        document.getElementById('balance').textContent = `${newBalance}€`;
-
-        const historyList = document.getElementById('transferHistory');
-        const li = document.createElement('li');
-        li.textContent = `Transféré ${amount}€ à ${recipient}`;
-        historyList.appendChild(li);
-    } else {
-        alert('Montant ou bénéficiaire invalide.');
-    }
+    alert(`Transfert en attente : Veuillez vérifier après 2 minutes.`);
 });
