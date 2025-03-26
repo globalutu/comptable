@@ -3,31 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord Financière</title>
+    <title>Connexion</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="dashboard">
-        <h1>Tableau de Bord Financière</h1>
-        <div id="message"></div>
-        <div class="balance">
-            <h2>Solde: <span id="balance">Loading...</span></h2>
-        </div>
-        <div class="transfer-section">
-            <h2>Effectuer un Transfert</h2>
-            <input type="text" id="recipient" placeholder="Bénéficiaire">
-            <input type="number" id="amount" placeholder="Montant">
-            <button id="transferBtn">Transférer</button>
-        </div>
-        <div class="history">
-            <h2>Historique des Transferts</h2>
-            <ul id="transferHistory"></ul>
-        </div>
-        <div class="validate">
-            <h2>Valider un Transfert</h2>
-            <button id="validateBtn">Valider</button>
-        </div>
+    <div class="login-container">
+        <h1>Connexion</h1>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+        </form>
+        <div id="loginMessage"></div>
     </div>
-    <script src="script.js"></script>
+    <script src="login.js"></script>
 </body>
 </html>
