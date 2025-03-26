@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Tableau de Bord Financière</h1>
+        <h2>Bienvenue, <span id="username"></span></h2>
+        <div class="balance">
+            <h2>Solde: <span id="balance">Loading...</span></h2>
+        </div>
+        <div class="transfer-section">
+            <h2>Effectuer un Transfert</h2>
+            <input type="text" id="recipient" placeholder="Bénéficiaire">
+            <input type="number" id="amount" placeholder="Montant">
+            <button id="transferBtn">Transférer</button>
+        </div>
+        <div class="history">
+            <h2>Historique des Transferts</h2>
+            <ul id="transferHistory"></ul>
+        </div>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+</html>
