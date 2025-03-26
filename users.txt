@@ -1,0 +1,3 @@
+admin,password123
+utilisateur1,pass456
+jean_doe,securepass
