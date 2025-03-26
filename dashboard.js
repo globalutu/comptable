@@ -1,41 +1,53 @@
 window.addEventListener('DOMContentLoaded', () => {
     const user = JSON.parse(localStorage.getItem('currentUser'));
-
     if (!user) {
         window.location.href = 'index.html';
     }
 
-    document.getElementById('username').textContent = user.username;
-    document.getElementById('role').textContent = user.role;
-    document.getElementById('manager').textContent = user.manager;
-    document.getElementById('phone').textContent = user.phone;
+    document.getElementById('username').textContent = user.name;
+    document.getElementById('balance').textContent = `${user.balance}€`;
 
-    if (user.role === 'Admin') {
-        document.getElementById('adminActions').style.display = 'block';
-    }
-
-    fetch('data.txt')
-        .then(response => response.text())
-        .then(data => {
-            const lines = data.split('\n');
-            const userData = lines.find(line => line.startsWith(user.username));
-            const [username, balance, history] = userData.split('|');
-
-            document.getElementById('balance').textContent = `${balance}€`;
-            const historyList = document.getElementById('transferHistory');
-            history.split(';').forEach(entry => {
-                const li = document.createElement('li');
-                li.textContent = entry;
-                li.className = 'list-group-item';
-                historyList.appendChild(li);
-            });
-        });
+    const historyList = document.getElementById('historyList');
+    user.history.split(';').forEach(entry => {
+        const li = document.createElement('li');
+        li.textContent = entry;
+        li.className = 'list-group-item';
+        historyList.appendChild(li);
+    });
 });
 
-document.getElementById('transferForm').addEventListener('submit', (e) => {
-    e.preventDefault();
+// Ajouter des fonds
+document.getElementById('addFunds').addEventListener('click', () => {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const amount = 200; // Exemple de montant
+    user.balance = parseFloat(user.balance) + amount;
+    user.history += `;Ajouté ${amount}€`;
 
-    const recipient = document.getElementById('recipient').value;
-    const amount = parseFloat(document.getElementById('amount').value);
-    alert(`Transfert en attente : Veuillez vérifier après 2 minutes.`);
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    alert('Fonds ajoutés avec succès!');
+    location.reload();
+});
+
+// Effectuer un transfert
+document.getElementById('transferBtn').addEventListener('click', () => {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const recipient = 'Marie'; // Exemple de bénéficiaire
+    const amount = 50; // Exemple de montant
+    user.balance = parseFloat(user.balance) - amount;
+    user.history += `;Transféré ${amount}€ à ${recipient}`;
+
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    alert('Transfert effectué avec succès!');
+    location.reload();
+});
+
+// Écrire au support
+document.getElementById('supportBtn').addEventListener('click', () => {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const message = 'Problème avec le solde'; // Exemple de message
+    user.history += `;Message: ${message}`;
+
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    alert('Message envoyé au support!');
+    location.reload();
 });
